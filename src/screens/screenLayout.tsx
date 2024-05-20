@@ -1,14 +1,27 @@
 import { Layout, Menu } from "antd";
 import { Content, Footer, Header } from "antd/es/layout/layout";
+import { MenuItemType } from "antd/es/menu/interface";
 import { SiExpensify } from "react-icons/si";
-import { Outlet } from "react-router-dom";
-
-const items = new Array(3).fill(null).map((_, index) => ({
-  key: index + 1,
-  label: `nav ${index + 1}`,
-}));
+import { Outlet, useNavigate } from "react-router-dom";
+import {
+  CONSTANT_BROWSER_ROUTE,
+  CONSTANT_COOKIE,
+} from "../constants/constants";
+import Cookies from "js-cookie";
 
 export function ScreenLayout() {
+  const navigate = useNavigate();
+  const menuList: MenuItemType[] = [
+    {
+      key: "1",
+      label: "Logout",
+      onClick: () => {
+        Cookies.remove(CONSTANT_COOKIE.ACCESS_TOKEN_COOKIE_KEY);
+        navigate(CONSTANT_BROWSER_ROUTE.LOGIN);
+      },
+    },
+  ];
+
   return (
     <Layout>
       <Header className="flex justify-between items-center">
@@ -22,7 +35,7 @@ export function ScreenLayout() {
           className="flex-1 justify-end text-xl capitalize"
           theme="dark"
           mode="horizontal"
-          items={items}
+          items={menuList}
         />
       </Header>
       <Content className="pt-12 px-12">

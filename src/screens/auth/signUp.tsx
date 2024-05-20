@@ -1,15 +1,29 @@
 import { Button, Form, FormProps, Input } from "antd";
-import AntDLink from "antd/es/typography/Link";
-import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
+import { Link, useNavigate } from "react-router-dom";
+import { UserApi } from "../../api/userApi";
+import { CONSTANT_COOKIE } from "../../constants/constants";
+import { userContext } from "../../context/user";
 
 type FieldType = {
-  username?: string;
-  password?: string;
+  username: string;
+  password: string;
 };
 
 export function SignUp() {
+  const navigate = useNavigate();
+  const { userDispatch } = userContext();
+
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-    console.log("Success:", values);
+    UserApi.signup(values.username, values.password).then((res) => {
+      if (!res) return;
+      Cookies.set(
+        CONSTANT_COOKIE.ACCESS_TOKEN_COOKIE_KEY,
+        res.data.accessToken
+      );
+      userDispatch({ type: "USER", payload: res.data });
+      navigate("/");
+    });
   };
 
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
@@ -25,7 +39,7 @@ export function SignUp() {
           <h1 className="text-4xl"> Sign up to Fin Track</h1>
         </div>
         <Form
-          className="min-w-96"
+          className="w-full"
           layout="vertical"
           name="basic"
           initialValues={{ remember: true }}
@@ -58,7 +72,9 @@ export function SignUp() {
         <div className="text-end">
           Already a user please login{" "}
           <Link to="/auth/login">
-            <AntDLink>here</AntDLink>
+            <Button className="btn-link" type="link">
+              here
+            </Button>
           </Link>
         </div>
       </div>

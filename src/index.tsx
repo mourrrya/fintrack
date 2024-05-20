@@ -1,10 +1,11 @@
+import { ConfigProvider } from "antd";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
+import { UserProvider } from "./context/user";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import { browserRoute } from "./routes/routes";
-import { ConfigProvider } from "antd";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -17,7 +18,9 @@ root.render(
         token: { colorPrimary: "#001529", colorSuccess: "ffffffa6" },
       }}
     >
-      <RouterProvider router={browserRoute} />
+      <UserProvider>
+        <RouterProvider router={browserRoute} />
+      </UserProvider>
     </ConfigProvider>
   </React.StrictMode>
 );

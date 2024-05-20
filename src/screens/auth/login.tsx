@@ -1,16 +1,30 @@
 import { Button, Form, FormProps, Input } from "antd";
 import AntDLink from "antd/es/typography/Link";
-import axios from "axios";
-import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
+import { Link, useNavigate } from "react-router-dom";
+import { UserApi } from "../../api/userApi";
+import { CONSTANT_COOKIE } from "../../constants/constants";
+import { userContext } from "../../context/user";
 
 type FieldType = {
-  username?: string;
-  password?: string;
+  username: string;
+  password: string;
 };
 
 export function Login() {
+  const navigate = useNavigate();
+  const { userDispatch } = userContext();
+
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-    console.log("Success:", values);
+    UserApi.login(values.username, values.password).then((res) => {
+      if (!res) return;
+      Cookies.set(
+        CONSTANT_COOKIE.ACCESS_TOKEN_COOKIE_KEY,
+        res.data.accessToken
+      );
+      userDispatch({ type: "USER", payload: res.data });
+      navigate("/");
+    });
   };
 
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
@@ -27,7 +41,7 @@ export function Login() {
         </div>
 
         <Form
-          className="min-w-96"
+          className="min-full"
           name="basic"
           layout="vertical"
           initialValues={{ remember: true }}
@@ -59,9 +73,11 @@ export function Login() {
         </Form>
 
         <div className="text-end">
-          Not a user please sign Up{" "}
+          Not a user please sign up{" "}
           <Link to="/auth/signup">
-            <AntDLink>here</AntDLink>
+            <Button className="btn-link" type="link">
+              here
+            </Button>
           </Link>
         </div>
       </div>

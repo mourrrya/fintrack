@@ -1,18 +1,23 @@
-import { RouteObject, createBrowserRouter } from "react-router-dom";
+import { RouteObject, createBrowserRouter, redirect } from "react-router-dom";
 import { App } from "../app";
-import { Main } from "../screens/main";
-import { ErrorPage } from "../screens/errorPage";
 import { AuthLayout } from "../screens/auth/authLayout";
 import { Login } from "../screens/auth/login";
 import { SignUp } from "../screens/auth/signUp";
+import { ErrorPage } from "../screens/errorPage";
+import { Main } from "../screens/main";
+import {
+  CONSTANT_BROWSER_ROUTE,
+  CONSTANT_COOKIE,
+} from "../constants/constants";
+import Cookies from "js-cookie";
 
 const authRoutes: RouteObject[] = [
   {
-    path: "/auth/login",
+    path: CONSTANT_BROWSER_ROUTE.LOGIN,
     element: <Login />,
   },
   {
-    path: "/auth/signup",
+    path: CONSTANT_BROWSER_ROUTE.SIGNUP,
     element: <SignUp />,
   },
 ];
@@ -32,11 +37,29 @@ const layoutRoutes: RouteObject[] = [
         path: "/",
         element: <App />,
         children: screenRoutes,
+        loader: () => {
+          const accessToken = Cookies.get(
+            CONSTANT_COOKIE.ACCESS_TOKEN_COOKIE_KEY
+          );
+          if (!accessToken) {
+            return redirect(CONSTANT_BROWSER_ROUTE.LOGIN);
+          }
+          return null;
+        },
       },
       {
         path: "/auth",
         element: <AuthLayout />,
         children: authRoutes,
+        loader: () => {
+          const accessToken = Cookies.get(
+            CONSTANT_COOKIE.ACCESS_TOKEN_COOKIE_KEY
+          );
+          if (accessToken) {
+            return redirect("/");
+          }
+          return null;
+        },
       },
     ],
   },
