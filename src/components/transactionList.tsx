@@ -54,7 +54,7 @@ function TransactionList() {
     <>
       <div>
         <List
-          dataSource={[...transactions, ...transactions]}
+          dataSource={transactions}
           renderItem={(txn) => (
             <List.Item
               key={txn.id}

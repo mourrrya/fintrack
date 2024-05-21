@@ -1,4 +1,5 @@
 import moment from "moment";
+import { ITransaction } from "../types/transactionType";
 
 export const displayDate = (date: string) => {
   return moment(date).format("DD-MM-YYYY hh:mm A");
@@ -10,4 +11,24 @@ export const displayMoney = (money: number) => {
     style: "currency",
     currency: "INR",
   });
+};
+
+export const displayTransaction = (
+  transactions: ITransaction[]
+): { expense: number; income: number } => {
+  const total = { expense: 0, income: 0 };
+  transactions.reduce((total, txn) => {
+    total.expense =
+      txn.transactionType === "EXPENSE"
+        ? total.expense + Number(txn.transactionAmount)
+        : total.expense;
+
+    total.income =
+      txn.transactionType === "INCOME"
+        ? total.income + Number(txn.transactionAmount)
+        : total.income;
+
+    return total;
+  }, total);
+  return total;
 };
