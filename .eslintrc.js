@@ -22,5 +22,6 @@ module.exports = {
     "react/react-in-jsx-scope": 0,
     "react/jsx-uses-react": 0,
     "no-debugger": 1,
+    "@typescript-eslint/no-non-null-assertion": 0,
   },
 };

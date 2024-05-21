@@ -16,10 +16,10 @@ export function SignUp() {
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     UserApi.signup(values.username, values.password).then((res) => {
       if (!res) return;
-      setAccessToken(res.data.accessToken);
-      setRefreshToken(res.data.refreshToken);
+      setAccessToken(res.accessToken);
+      setRefreshToken(res.refreshToken);
 
-      userDispatch({ type: "USER", payload: res.data });
+      userDispatch({ type: "USER", payload: res });
       navigate("/");
     });
   };

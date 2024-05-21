@@ -14,11 +14,16 @@ const userReducer = (
   action: TransactionAction
 ) => {
   switch (action.type) {
-    case "TRANSACTION": {
-      return state;
+    case "GET_TRANSACTIONS": {
+      state.transactions = action.payload;
+      return { ...state };
     }
     case "TRANSACTION_MODAL": {
       state.transactionModal = action.payload;
+      return { ...state };
+    }
+    case "ON_TRANSACTION_EDIT": {
+      state.selectedTransactions = action.payload;
       return { ...state };
     }
 
@@ -28,7 +33,9 @@ const userReducer = (
   }
 };
 
-const initialTransactionState = {};
+const initialTransactionState: InitialTransactionState = {
+  transactions: [],
+};
 
 export const TransactionProvider = ({ children }: { children: ReactNode }) => {
   const [transactionState, dispatchTransaction] = useReducer(

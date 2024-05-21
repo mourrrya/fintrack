@@ -1,5 +1,6 @@
 import { Button, FormInstance, Modal } from "antd";
 import { useState } from "react";
+import { TransactionApi } from "../api/transactionApi";
 import { transactionContext } from "../context/transaction";
 import {
   TransactionFieldType,
@@ -26,7 +27,15 @@ export const TransactionBtn = () => {
     transactionType: TransactionType,
     values: TransactionFieldType
   ) => {
-    // TODO API INTEGRATION
+    TransactionApi.create({ ...values, transactionType }).then(() => {
+      refreshTxns();
+    });
+  };
+
+  const refreshTxns = () => {
+    TransactionApi.getTransactions().then((res) => {
+      dispatchTransaction({ type: "GET_TRANSACTIONS", payload: res });
+    });
   };
 
   const dispatchModal = (transactionType?: TransactionType) => {
@@ -58,6 +67,7 @@ export const TransactionBtn = () => {
       <Modal
         title="Add Expense"
         okText="Add"
+        destroyOnClose
         open={transactionState.transactionModal === "EXPENSE"}
         onOk={() => handleModalOk("EXPENSE")}
         onCancel={() => dispatchModal()}
@@ -71,6 +81,7 @@ export const TransactionBtn = () => {
       <Modal
         title="Add Income"
         okText="Add"
+        destroyOnClose
         open={transactionState.transactionModal === "INCOME"}
         onOk={() => handleModalOk("INCOME")}
         onCancel={() => dispatchModal()}

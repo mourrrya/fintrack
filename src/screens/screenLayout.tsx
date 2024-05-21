@@ -21,15 +21,14 @@ export function ScreenLayout() {
   useEffect(() => {
     UserApi.user()
       .then((userRes) => {
-        userDispatch({ type: "USER", payload: userRes.data });
-        return;
+        userDispatch({ type: "USER", payload: userRes });
       })
       .catch((err) => {
         if (err.response?.data?.message === CONSTANT_ERROR.JWT_EXPIRED) {
           return UserApi.refreshToken(getRefreshToken() || "")
             .then((tokenRes) => {
-              setAccessToken(tokenRes.data.accessToken);
-              setRefreshToken(tokenRes.data.refreshToken);
+              setAccessToken(tokenRes.accessToken);
+              setRefreshToken(tokenRes.refreshToken);
             })
             .catch(() => {
               removeAccessToken();
@@ -58,9 +57,6 @@ export function ScreenLayout() {
           <SiExpensify size={40} />
         </div>
         <Menu
-          onClick={(e) => {
-            console.log("Hello world", e);
-          }}
           className="flex-1 justify-end text-xl capitalize"
           theme="dark"
           mode="horizontal"
@@ -68,7 +64,7 @@ export function ScreenLayout() {
         />
       </Header>
       <Content className="pt-12 px-12">
-        <div className="p-4 bg-white min-h-[calc(100vh_-_181px)]">
+        <div className="bg-white h-[calc(100vh_-_181px)]">
           <Outlet />
         </div>
       </Content>

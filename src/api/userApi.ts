@@ -1,42 +1,24 @@
-import { AxiosResponse } from "axios";
 import { IUser } from "../types/userTypes";
 import { api } from "./api";
 
 export class UserApi {
-  static signup(
-    username: string,
-    password: string
-  ): Promise<AxiosResponse<IUser> | void> {
+  static signup(username: string, password: string): Promise<IUser> {
     const payload = { username, password };
-    return api
-      .post("/user/signup", payload)
-      .then((res) => {
-        return res;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    return api.post("/user/signup", payload).then((res) => res.data);
   }
 
-  static login(
-    username: string,
-    password: string
-  ): Promise<AxiosResponse<IUser>> {
+  static login(username: string, password: string): Promise<IUser> {
     const payload = { username: username.trim(), password };
-    return api.post("/user/login", payload).then((res) => {
-      return res;
-    });
+    return api.post("/user/login", payload).then((res) => res.data);
   }
 
-  static user(): Promise<AxiosResponse<IUser>> {
-    return api.get("/user").then((res) => {
-      return res;
-    });
+  static user(): Promise<IUser> {
+    return api.get("/user").then((res) => res.data);
   }
 
-  static refreshToken(refreshToken: string): Promise<AxiosResponse<IUser>> {
-    return api.post("/user/refresh-token", { refreshToken }).then((res) => {
-      return res;
-    });
+  static refreshToken(refreshToken: string): Promise<IUser> {
+    return api
+      .post("/user/refresh-token", { refreshToken })
+      .then((res) => res.data);
   }
 }

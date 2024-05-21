@@ -16,9 +16,9 @@ export function Login() {
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     UserApi.login(values.username, values.password).then((res) => {
       if (!res) return;
-      setAccessToken(res.data.accessToken);
-      setRefreshToken(res.data.refreshToken);
-      userDispatch({ type: "USER", payload: res.data });
+      setAccessToken(res.accessToken);
+      setRefreshToken(res.refreshToken);
+      userDispatch({ type: "USER", payload: res });
       navigate("/");
     });
   };

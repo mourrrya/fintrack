@@ -2,28 +2,33 @@ import { Dispatch } from "react";
 
 export type TransactionType = "INCOME" | "EXPENSE";
 
-export interface ITransaction {
-  id?: number;
-  title: string;
-  transactionType: TransactionType;
-  transaction_amount: number;
-}
-
 export interface TransactionFieldType {
   id?: number;
   title: string;
-  amount: string;
+  transactionAmount: number;
+}
+
+export interface ITransaction extends TransactionFieldType {
+  userId?: number;
+  updatedAt?: string;
+  createdAt?: string;
+  transactionType: TransactionType;
 }
 
 export interface InitialTransactionState {
-  transaction?: ITransaction;
+  transactions: ITransaction[];
+  selectedTransactions?: ITransaction;
   transactionModal?: TransactionType;
 }
 
 export type TransactionAction =
   | {
-      type: "TRANSACTION";
-      payload: ITransaction;
+      type: "GET_TRANSACTIONS";
+      payload: ITransaction[];
+    }
+  | {
+      type: "ON_TRANSACTION_EDIT";
+      payload?: ITransaction;
     }
   | {
       type: "TRANSACTION_MODAL";

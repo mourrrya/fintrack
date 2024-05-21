@@ -4,11 +4,13 @@ import { FC, useEffect } from "react";
 import { TransactionFieldType } from "../types/transactionType";
 
 interface TransactionFormProps {
+  initialValues?: TransactionFieldType;
   onFormInstanceReady: (instance: FormInstance<TransactionFieldType>) => void;
 }
 
 export const TransactionForm: FC<TransactionFormProps> = ({
   onFormInstanceReady,
+  initialValues,
 }) => {
   const [form] = useForm();
 
@@ -17,7 +19,12 @@ export const TransactionForm: FC<TransactionFormProps> = ({
   }, []);
 
   return (
-    <Form layout="vertical" form={form} name="form_in_modal">
+    <Form
+      layout="vertical"
+      form={form}
+      name="form_in_modal"
+      initialValues={initialValues}
+    >
       <Form.Item<TransactionFieldType>
         name="title"
         label="Title"
@@ -28,7 +35,7 @@ export const TransactionForm: FC<TransactionFormProps> = ({
         <Input autoFocus />
       </Form.Item>
       <Form.Item<TransactionFieldType>
-        name="amount"
+        name="transactionAmount"
         label="Amount"
         rules={[
           {
