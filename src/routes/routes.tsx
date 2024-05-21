@@ -1,15 +1,12 @@
 import { RouteObject, createBrowserRouter, redirect } from "react-router-dom";
 import { App } from "../app";
+import { CONSTANT_BROWSER_ROUTE } from "../constants/constants";
+import { getAccessToken } from "../helper/cookies";
 import { AuthLayout } from "../screens/auth/authLayout";
 import { Login } from "../screens/auth/login";
 import { SignUp } from "../screens/auth/signUp";
 import { ErrorPage } from "../screens/errorPage";
-import { Main } from "../screens/main";
-import {
-  CONSTANT_BROWSER_ROUTE,
-  CONSTANT_COOKIE,
-} from "../constants/constants";
-import Cookies from "js-cookie";
+import { Dashboard } from "../screens/dashboard";
 
 const authRoutes: RouteObject[] = [
   {
@@ -25,9 +22,25 @@ const authRoutes: RouteObject[] = [
 const screenRoutes: RouteObject[] = [
   {
     index: true,
-    element: <Main />,
+    element: <Dashboard />,
   },
 ];
+
+const handleAuthPath = () => {
+  const accessToken = getAccessToken();
+  if (accessToken) {
+    return redirect("/");
+  }
+  return null;
+};
+
+export const handlePrivatePath = () => {
+  const accessToken = getAccessToken();
+  if (!accessToken) {
+    return redirect(CONSTANT_BROWSER_ROUTE.LOGIN);
+  }
+  return null;
+};
 
 const layoutRoutes: RouteObject[] = [
   {
@@ -37,29 +50,13 @@ const layoutRoutes: RouteObject[] = [
         path: "/",
         element: <App />,
         children: screenRoutes,
-        loader: () => {
-          const accessToken = Cookies.get(
-            CONSTANT_COOKIE.ACCESS_TOKEN_COOKIE_KEY
-          );
-          if (!accessToken) {
-            return redirect(CONSTANT_BROWSER_ROUTE.LOGIN);
-          }
-          return null;
-        },
+        loader: handlePrivatePath,
       },
       {
         path: "/auth",
         element: <AuthLayout />,
         children: authRoutes,
-        loader: () => {
-          const accessToken = Cookies.get(
-            CONSTANT_COOKIE.ACCESS_TOKEN_COOKIE_KEY
-          );
-          if (accessToken) {
-            return redirect("/");
-          }
-          return null;
-        },
+        loader: handleAuthPath,
       },
     ],
   },

@@ -7,3 +7,7 @@ export const CONSTANT_BROWSER_ROUTE = {
   LOGIN: "/auth/login",
   SIGNUP: "/auth/signup",
 };
+
+export const CONSTANT_ERROR = {
+  JWT_EXPIRED: "jwt expired",
+};

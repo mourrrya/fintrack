@@ -1,9 +1,28 @@
-import axios from "axios";
-
-const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJhbmlsIiwiaWF0IjoxNzE2MjMxNDcwLCJleHAiOjE3MTYyMzUwNzB9.unXesm41ygSkL3j9w8cLZOvZd8zSz7lEdSwV0VfBefg";
+import axios, { AxiosError } from "axios";
+import { getAccessToken, removeAccessToken } from "../helper/cookies";
 
 export const api = axios.create({
   baseURL: process.env.REACT_APP_SERVER_URL || "",
-  headers: { Authorization: `Bearer ${token}` },
 });
+
+api.interceptors.request.use(
+  (req) => {
+    req.headers["Authorization"] = `Bearer ${getAccessToken()}`;
+    return req;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+api.interceptors.response.use(
+  (res) => {
+    return res;
+  },
+  (error: AxiosError) => {
+    if (error.response?.status === 401) {
+      removeAccessToken();
+    }
+    return Promise.reject(error);
+  }
+);

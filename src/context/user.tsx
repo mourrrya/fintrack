@@ -1,9 +1,8 @@
 import {
-  Dispatch,
   ReactNode,
   createContext,
   useContext,
-  useReducer,
+  useReducer
 } from "react";
 import { InitialUserState, UserAction, UserContext } from "../types/userTypes";
 

@@ -1,22 +1,51 @@
 import { Layout, Menu } from "antd";
 import { Content, Footer, Header } from "antd/es/layout/layout";
 import { MenuItemType } from "antd/es/menu/interface";
+import { useEffect } from "react";
 import { SiExpensify } from "react-icons/si";
 import { Outlet, useNavigate } from "react-router-dom";
+import { UserApi } from "../api/userApi";
+import { CONSTANT_BROWSER_ROUTE, CONSTANT_ERROR } from "../constants/constants";
 import {
-  CONSTANT_BROWSER_ROUTE,
-  CONSTANT_COOKIE,
-} from "../constants/constants";
-import Cookies from "js-cookie";
+  getRefreshToken,
+  removeAccessToken,
+  removeRefreshToken,
+  setAccessToken,
+  setRefreshToken,
+} from "../helper/cookies";
+import { userContext } from "../context/user";
 
 export function ScreenLayout() {
   const navigate = useNavigate();
+  const { userDispatch } = userContext();
+  useEffect(() => {
+    UserApi.user()
+      .then((userRes) => {
+        userDispatch({ type: "USER", payload: userRes.data });
+        return;
+      })
+      .catch((err) => {
+        if (err.response?.data?.message === CONSTANT_ERROR.JWT_EXPIRED) {
+          return UserApi.refreshToken(getRefreshToken() || "")
+            .then((tokenRes) => {
+              setAccessToken(tokenRes.data.accessToken);
+              setRefreshToken(tokenRes.data.refreshToken);
+            })
+            .catch(() => {
+              removeAccessToken();
+              removeRefreshToken();
+              navigate(CONSTANT_BROWSER_ROUTE.LOGIN);
+            });
+        }
+      });
+  }, []);
+
   const menuList: MenuItemType[] = [
     {
       key: "1",
       label: "Logout",
       onClick: () => {
-        Cookies.remove(CONSTANT_COOKIE.ACCESS_TOKEN_COOKIE_KEY);
+        removeAccessToken();
         navigate(CONSTANT_BROWSER_ROUTE.LOGIN);
       },
     },

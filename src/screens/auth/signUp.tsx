@@ -1,9 +1,8 @@
 import { Button, Form, FormProps, Input } from "antd";
-import Cookies from "js-cookie";
 import { Link, useNavigate } from "react-router-dom";
 import { UserApi } from "../../api/userApi";
-import { CONSTANT_COOKIE } from "../../constants/constants";
 import { userContext } from "../../context/user";
+import { setAccessToken, setRefreshToken } from "../../helper/cookies";
 
 type FieldType = {
   username: string;
@@ -17,10 +16,9 @@ export function SignUp() {
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     UserApi.signup(values.username, values.password).then((res) => {
       if (!res) return;
-      Cookies.set(
-        CONSTANT_COOKIE.ACCESS_TOKEN_COOKIE_KEY,
-        res.data.accessToken
-      );
+      setAccessToken(res.data.accessToken);
+      setRefreshToken(res.data.refreshToken);
+
       userDispatch({ type: "USER", payload: res.data });
       navigate("/");
     });

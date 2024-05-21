@@ -6,6 +6,7 @@ import { UserProvider } from "./context/user";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import { browserRoute } from "./routes/routes";
+import { TransactionProvider } from "./context/transaction";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -19,7 +20,9 @@ root.render(
       }}
     >
       <UserProvider>
-        <RouterProvider router={browserRoute} />
+        <TransactionProvider>
+          <RouterProvider router={browserRoute} />
+        </TransactionProvider>
       </UserProvider>
     </ConfigProvider>
   </React.StrictMode>
