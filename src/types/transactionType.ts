@@ -1,15 +1,23 @@
 import { Dispatch } from "react";
 
-export type transactionType = "INCOME" | "EXPENSE";
+export type TransactionType = "INCOME" | "EXPENSE";
 
 export interface ITransaction {
-  transactionType: transactionType;
+  id?: number;
+  title: string;
+  transactionType: TransactionType;
   transaction_amount: number;
+}
+
+export interface TransactionFieldType {
+  id?: number;
+  title: string;
+  amount: string;
 }
 
 export interface InitialTransactionState {
   transaction?: ITransaction;
-  transactionModal?: transactionType;
+  transactionModal?: TransactionType;
 }
 
 export type TransactionAction =
@@ -19,7 +27,7 @@ export type TransactionAction =
     }
   | {
       type: "TRANSACTION_MODAL";
-      payload?: transactionType;
+      payload?: TransactionType;
     };
 
 export interface TransactionContext {
