@@ -63,7 +63,7 @@ export function ScreenLayout() {
           items={menuList}
         />
       </Header>
-      <Content className="pt-12 px-12">
+      <Content className="pt-4 px-4 md:pt-12 md:px-12">
         <div className="bg-white h-[calc(100vh_-_181px)]">
           <Outlet />
         </div>

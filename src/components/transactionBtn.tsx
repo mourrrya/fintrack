@@ -47,7 +47,7 @@ export const TransactionBtn = () => {
 
   return (
     <>
-      <div className="flex gap-8">
+      <div className="flex gap-8 flex-wrap">
         <Button
           type="primary"
           size="large"

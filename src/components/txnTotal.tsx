@@ -5,7 +5,7 @@ function TxnTotal() {
   const { transactionState } = transactionContext();
   const { expense, income } = displayTransaction(transactionState.transactions);
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-0.5">
       <span>
         <span>Total Expense: </span>
         <span className="text-danger font-semibold">
