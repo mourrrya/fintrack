@@ -1,8 +1,10 @@
 import axios, { AxiosError } from "axios";
 import { getAccessToken, removeAccessToken } from "../helper/cookies";
 
+console.log("REACT_APP_SERVER_URL", process.env.REACT_APP_SERVER_URL);
+
 export const api = axios.create({
-  baseURL: process.env.REACT_APP_SERVER_URL || "",
+  baseURL: process.env.REACT_APP_SERVER_URL,
 });
 
 api.interceptors.request.use(

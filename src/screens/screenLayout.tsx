@@ -17,7 +17,7 @@ import { userContext } from "../context/user";
 
 export function ScreenLayout() {
   const navigate = useNavigate();
-  const { userDispatch } = userContext();
+  const { userState, userDispatch } = userContext();
   useEffect(() => {
     UserApi.user()
       .then((userRes) => {
@@ -42,6 +42,10 @@ export function ScreenLayout() {
   const menuList: MenuItemType[] = [
     {
       key: "1",
+      label: `Welcome ${userState.user?.username}`,
+    },
+    {
+      key: "2",
       label: "Logout",
       onClick: () => {
         removeAccessToken();
@@ -64,8 +68,8 @@ export function ScreenLayout() {
         />
       </Header>
       <Content className="pt-4 px-4 md:pt-12 md:px-12">
-        <div className="bg-white h-[calc(100vh_-_181px)]">
-          <Outlet />
+        <div className="bg-white  h-[calc(100vh_-_149px)] md:h-[calc(100vh_-_181px)]">
+          {userState.user && <Outlet />}
         </div>
       </Content>
       <Footer style={{ textAlign: "center" }}>

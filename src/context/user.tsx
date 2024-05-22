@@ -1,25 +1,15 @@
-import {
-  ReactNode,
-  createContext,
-  useContext,
-  useReducer
-} from "react";
+import { ReactNode, createContext, useContext, useReducer } from "react";
 import { InitialUserState, UserAction, UserContext } from "../types/userTypes";
 
 const userCtx = createContext<UserContext>({} as UserContext);
 
-const userReducer = (state: InitialUserState, action: UserAction) => {
+const userReducer = (
+  state: InitialUserState,
+  action: UserAction
+): InitialUserState => {
   switch (action.type) {
-    case "LOGIN": {
-      return state;
-    }
-
-    case "SIGNUP": {
-      return state;
-    }
-
     case "USER": {
-      return state;
+      return { ...state, user: action.payload };
     }
 
     default: {
