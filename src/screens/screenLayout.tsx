@@ -42,7 +42,7 @@ export function ScreenLayout() {
   const menuList: MenuItemType[] = [
     {
       key: "1",
-      label: `Welcome ${userState.user?.username}`,
+      label: `Welcome ${userState.user?.username || ""}`,
     },
     {
       key: "2",
