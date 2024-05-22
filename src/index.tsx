@@ -7,6 +7,8 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import { browserRoute } from "./routes/routes";
 import { TransactionProvider } from "./context/transaction";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -19,6 +21,7 @@ root.render(
         token: { colorPrimary: "#001529", colorSuccess: "ffffffa6" },
       }}
     >
+      <ToastContainer />
       <UserProvider>
         <TransactionProvider>
           <RouterProvider router={browserRoute} />

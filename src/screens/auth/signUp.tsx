@@ -1,4 +1,4 @@
-import { Button, Form, FormProps, Input } from "antd";
+import { App, Button, Form, FormProps, Input } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { UserApi } from "../../api/userApi";
 import { userContext } from "../../context/user";
@@ -24,12 +24,6 @@ export function SignUp() {
     });
   };
 
-  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
-    errorInfo
-  ) => {
-    console.log("Failed:", errorInfo);
-  };
-
   return (
     <div className="flex h-full justify-center items-center">
       <div className="w-1/2 shadow-2xl px-20 py-10 rounded-3xl space-y-8">
@@ -42,7 +36,6 @@ export function SignUp() {
           name="basic"
           initialValues={{ remember: true }}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
           <Form.Item<FieldType>

@@ -6,6 +6,7 @@ import { SiExpensify } from "react-icons/si";
 import { Outlet, useNavigate } from "react-router-dom";
 import { UserApi } from "../api/userApi";
 import { CONSTANT_BROWSER_ROUTE, CONSTANT_ERROR } from "../constants/constants";
+import { userContext } from "../context/user";
 import {
   getRefreshToken,
   removeAccessToken,
@@ -13,7 +14,7 @@ import {
   setAccessToken,
   setRefreshToken,
 } from "../helper/cookies";
-import { userContext } from "../context/user";
+import { displayError } from "../helper/helper";
 
 export function ScreenLayout() {
   const navigate = useNavigate();
@@ -30,12 +31,17 @@ export function ScreenLayout() {
               setAccessToken(tokenRes.accessToken);
               setRefreshToken(tokenRes.refreshToken);
             })
-            .catch(() => {
+            .catch((e) => {
               removeAccessToken();
               removeRefreshToken();
+              displayError(e);
               navigate(CONSTANT_BROWSER_ROUTE.LOGIN);
             });
         }
+        removeAccessToken();
+        removeRefreshToken();
+        displayError(err);
+        navigate("/auth/login");
       });
   }, []);
 

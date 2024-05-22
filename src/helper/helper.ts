@@ -1,8 +1,14 @@
 import moment from "moment";
 import { ITransaction } from "../types/transactionType";
+import { AxiosError } from "axios";
+import { toast } from "react-toastify";
 
 export const displayDate = (date: string) => {
   return moment(date).format("DD-MM-YYYY hh:mm A");
+};
+
+export const displayError = (e: AxiosError<{ message: string }>) => {
+  toast.error(e.response?.data?.message ?? "something went wrong");
 };
 
 export const displayMoney = (money: number) => {
