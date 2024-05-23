@@ -1,5 +1,7 @@
 services:
   server:
+    environment:
+      - .env
     build:
       context: .
     container_name: fin-track

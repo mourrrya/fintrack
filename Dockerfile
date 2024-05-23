@@ -15,9 +15,6 @@ RUN yarn install
 # Copy the rest of the source files into the image.
 COPY . .
 
-# Set default environment variables
-ENV REACT_APP_SERVER_URL=http://localhost:4000
-
 # Expose the port that the application listens on.
 EXPOSE 3045
 
